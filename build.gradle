@@ -23,23 +23,6 @@ repositories {
 }
 
 dependencies {
-
-
-		// ... existing dependencies ...
-
-		// Test dependencies
-		testImplementation 'org.springframework.boot:spring-boot-starter-test'
-		testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-		testImplementation 'org.testcontainers:testcontainers'
-		testImplementation 'org.testcontainers:junit-jupiter'
-		testImplementation 'org.testcontainers:postgresql'
-		testImplementation 'org.testcontainers:kafka'
-		testImplementation 'org.testcontainers:rabbitmq'
-
-
-	test {
-		useJUnitPlatform()
-	}
 	// Spring Boot Starters
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -47,10 +30,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
-
-	// This should already be there
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	// Spring Data Commons is included transitively
 
 	// Thymeleaf extras
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
@@ -68,6 +47,7 @@ dependencies {
 	// Testing
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'com.h2database:h2'
 }
 
 tasks.named('test') {
