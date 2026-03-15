@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header}">
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container-fluid py-4 px-4">
+    <div class="row g-4">
+        <!-- Sidebar -->
+        <div class="col-lg-2">
+             <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden sticky-top" style="top: 100px;">
+                <div class="card-header bg-success text-white py-3">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-grid me-2"></i>Admin Menu</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a th:href="@{/admin/dashboard}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-house-door me-2"></i>Dashboard
+                    </a>
+                    <a th:href="@{/admin/products}" class="list-group-item list-group-item-action active bg-success border-success py-3">
+                        <i class="bi bi-box-seam me-2"></i>Manage Products
+                    </a>
+                    <a th:href="@{/admin/orders}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-cart-check me-2"></i>Orders
+                    </a>
+                    <a th:href="@{/admin/messages}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-chat-dots me-2"></i>Messages
+                    </a>
+                    <a th:href="@{/admin/reports}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-graph-up me-2"></i>Reports
+                    </a>
+                    <a th:href="@{/admin/settings}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-gear me-2"></i>Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-box-seam text-success me-2"></i>Product Inventory</h5>
+                    <a th:href="@{/admin/products/add}" class="btn btn-success rounded-pill px-4">
+                        <i class="bi bi-plus-circle me-2"></i>Add New Product
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="px-4 py-3">Product</th>
+                                    <th class="py-3">Category</th>
+                                    <th class="py-3">Price</th>
+                                    <th class="py-3">Stock</th>
+                                    <th class="py-3">Status</th>
+                                    <th class="py-3 text-end pe-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="product : ${products}">
+                                    <td class="px-4 py-3">
+                                        <div class="d-flex align-items-center">
+                                            <img th:src="${product.imageUrl}" class="rounded-3 me-3" style="width: 45px; height: 45px; object-fit: cover;" onerror="this.src='/images/default-product.jpg'">
+                                            <div>
+                                                <div class="fw-bold" th:text="${product.name}">Product Name</div>
+                                                <small class="text-muted" th:text="${product.unit}">Unit</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3">
+                                        <span class="badge bg-light text-dark border" th:text="${product.category}">Category</span>
+                                    </td>
+                                    <td class="py-3 fw-bold text-success" th:text="'$' + ${product.price}">$0.00</td>
+                                    <td class="py-3">
+                                        <div th:text="${product.stockQuantity}">0</div>
+                                        <div class="progress mt-1" style="height: 4px; width: 60px;">
+                                            <div class="progress-bar" role="progressbar"
+                                                 th:style="'width: ' + ${product.stockQuantity > 100 ? 100 : product.stockQuantity} + '%'"
+                                                 th:classappend="${product.stockQuantity < 10 ? 'bg-danger' : (product.stockQuantity < 30 ? 'bg-warning' : 'bg-success')}"></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3">
+                                        <span th:if="${product.stockQuantity > 0}" class="badge bg-success-subtle text-success px-3">In Stock</span>
+                                        <span th:if="${product.stockQuantity == 0}" class="badge bg-danger-subtle text-danger px-3">Out of Stock</span>
+                                    </td>
+                                    <td class="py-3 text-end pe-4">
+                                        <div class="btn-group">
+                                            <a th:href="@{/admin/products/edit/{id}(id=${product.id})}" class="btn btn-sm btn-outline-primary border-0 rounded-circle me-1">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a th:href="@{/admin/products/delete/{id}(id=${product.id})}" class="btn btn-sm btn-outline-danger border-0 rounded-circle"
+                                               onclick="return confirm('Are you sure you want to delete this product?')">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(products)}">
+                                    <td colspan="6" class="text-center py-5">
+                                        <p class="text-muted">No products found. Start by adding one!</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

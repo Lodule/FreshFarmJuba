@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header}">
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments :: navbar}"></div>
+
+<!-- Hero Section -->
+<section class="position-relative overflow-hidden py-5" style="background: linear-gradient(135deg, var(--deep-forest), var(--primary-green)); min-height: 400px; display: flex; align-items: center;">
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center">
+            <div class="col-lg-7" data-aos="fade-right">
+                <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill fw-bold">SINCE 2018</span>
+                <h1 class="display-3 fw-bold text-white mb-4">Cultivating Quality in Juba</h1>
+                <p class="lead text-white-50 mb-4">Our journey from a small family patch to South Sudan's premier organic farm supplier.</p>
+                <div class="d-flex gap-3">
+                    <a th:href="@{/products}" class="btn btn-warning btn-lg rounded-pill px-4 fw-bold shadow">Explore Our Harvest</a>
+                    <a href="#our-values" class="btn btn-outline-light btn-lg rounded-pill px-4">Our Values</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Decor -->
+    <div class="position-absolute end-0 bottom-0 opacity-10 d-none d-lg-block">
+        <i class="bi bi-tree-fill" style="font-size: 25rem; color: white;"></i>
+    </div>
+</section>
+
+<!-- Stats Bar -->
+<div class="container" style="margin-top: -50px; position: relative; z-index: 10;">
+    <div class="row g-0 shadow-lg rounded-4 overflow-hidden text-center bg-white border">
+        <div class="col-md-3 border-end py-4">
+            <h2 class="fw-bold text-success mb-0">8+</h2>
+            <small class="text-muted text-uppercase fw-bold">Years Experience</small>
+        </div>
+        <div class="col-md-3 border-end py-4">
+            <h2 class="fw-bold text-success mb-0">500+</h2>
+            <small class="text-muted text-uppercase fw-bold">Happy Families</small>
+        </div>
+        <div class="col-md-3 border-end py-4">
+            <h2 class="fw-bold text-success mb-0">100%</h2>
+            <small class="text-muted text-uppercase fw-bold">Organic Certified</small>
+        </div>
+        <div class="col-md-3 py-4">
+            <h2 class="fw-bold text-success mb-0">24h</h2>
+            <small class="text-muted text-uppercase fw-bold">Farm to Table</small>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container py-5">
+    <!-- Our Story Section -->
+    <div class="row align-items-center mb-5 py-5">
+        <div class="col-lg-6 mb-4 mb-lg-0" data-aos="zoom-in">
+            <div class="position-relative">
+                <img src="/images/farm-hero.jpg" class="img-fluid rounded-5 shadow-lg" alt="Our Farm" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'">
+                <div class="position-absolute bottom-0 start-0 m-4 p-4 bg-white rounded-4 shadow-lg d-none d-md-block" style="max-width: 250px;">
+                    <i class="bi bi-quote fs-1 text-warning opacity-50 mb-2"></i>
+                    <p class="small fst-italic mb-0">"We believe everyone in Juba deserves access to food that is healthy, affordable, and sustainable."</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+            <h2 class="display-5 fw-bold mb-4">The Seeds of Our Story</h2>
+            <p class="text-muted lead mb-4">Fresh Farm Juba was born out of a simple necessity: the lack of reliable, fresh, and organic produce in the local markets of Juba.</p>
+            <p class="text-muted mb-4">What started as a small family initiative to provide clean poultry and vegetables for our neighbors has grown into a modern agricultural hub. Today, we utilize sustainable irrigation and organic fertilizers to ensure that every broiler, layer, and cabbage meets the highest standards of quality.</p>
+            <div class="row g-3 mt-2">
+                <div class="col-sm-6">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        <span class="fw-bold">No Pesticides</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        <span class="fw-bold">Local Employment</span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        <span class="fw-bold">Water Conservation</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        <span class="fw-bold">Daily Harvest</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Values Section -->
+    <section id="our-values" class="py-5 mb-5 bg-white rounded-5 shadow-sm border p-4 p-md-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Our Core Values</h2>
+            <p class="text-muted">The principles that guide our every harvest</p>
+        </div>
+        <div class="row g-4 text-center">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-light rounded-circle d-inline-flex p-4 mb-3">
+                    <i class="bi bi-shield-check fs-1 text-success"></i>
+                </div>
+                <h4 class="fw-bold">Integrity</h4>
+                <p class="text-muted small">We are transparent about our farming methods. If we say it's organic, it truly is.</p>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="bg-light rounded-circle d-inline-flex p-4 mb-3">
+                    <i class="bi bi-heart fs-1 text-danger"></i>
+                </div>
+                <h4 class="fw-bold">Community</h4>
+                <p class="text-muted small">We don't just sell to Juba; we are part of Juba. Supporting local growth is our priority.</p>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="bg-light rounded-circle d-inline-flex p-4 mb-3">
+                    <i class="bi bi-recycle fs-1 text-primary"></i>
+                </div>
+                <h4 class="fw-bold">Sustainability</h4>
+                <p class="text-muted small">Farming for today while protecting the soil of Juba for future generations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <div class="py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Meet the Founders</h2>
+            <p class="text-muted">The hands behind the harvest</p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-4 mb-4" data-aos="flip-left">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-center hover-lift">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="card-img-top" style="height: 300px; object-fit: cover;">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-1">John Lokolong</h5>
+                        <p class="text-success small fw-bold text-uppercase mb-3">Chief Farmer</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="#" class="btn btn-light btn-sm rounded-circle"><i class="bi bi-linkedin"></i></a>
+                            <a href="#" class="btn btn-light btn-sm rounded-circle"><i class="bi bi-twitter-x"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<section class="py-5 bg-gradient-success text-white text-center rounded-0">
+    <div class="container py-4">
+        <h2 class="fw-bold mb-3">Want to visit our farm?</h2>
+        <p class="mb-4 opacity-75">We host guided tours for schools, businesses, and curious neighbors every Friday.</p>
+        <a th:href="@{/contact}" class="btn btn-light btn-lg rounded-pill px-5 fw-bold">Book a Farm Tour</a>
+    </div>
+</section>
+
+<style>
+    .bg-gradient-success {
+        background: linear-gradient(135deg, var(--deep-forest), var(--primary-green));
+    }
+    .hover-lift {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+    }
+</style>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

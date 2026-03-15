@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header}">
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<!-- Page Header -->
+<div class="bg-gradient-primary text-white py-4">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-bold mb-1">
+                    <i class="bi bi-plus-circle me-2"></i>Add New Product
+                </h2>
+                <p class="mb-0 opacity-75">Add fresh farm products to your inventory</p>
+            </div>
+            <a th:href="@{/admin/products}" class="btn btn-light rounded-pill px-4">
+                <i class="bi bi-arrow-left me-2"></i>Back to Products
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Main Form -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg" style="border-radius: 32px; overflow: hidden;">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h4 class="fw-bold mb-0">
+                        <i class="bi bi-box-seam text-success me-2"></i>
+                        Product Information
+                    </h4>
+                </div>
+
+                <div class="card-body p-4">
+                    <form th:action="@{/admin/products/save}" method="post" enctype="multipart/form-data" id="productForm">
+                        <!-- Basic Information -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-8">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-tag text-success me-1"></i>
+                                    Product Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="name" class="form-control form-control-lg bg-light border-0"
+                                       placeholder="e.g., Premium Broilers, Organic Vegetables" required
+                                       style="border-radius: 16px;">
+                                <small class="text-muted">Choose a descriptive name for your product</small>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-upc-scan text-success me-1"></i>
+                                    SKU
+                                </label>
+                                <input type="text" name="sku" class="form-control form-control-lg bg-light border-0"
+                                       placeholder="FFJ-001" style="border-radius: 16px;">
+                                <small class="text-muted">Unique product code (optional)</small>
+                            </div>
+                        </div>
+
+                        <!-- Category & Tags -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-grid text-success me-1"></i>
+                                    Category <span class="text-danger">*</span>
+                                </label>
+                                <select name="category" class="form-select form-select-lg bg-light border-0"
+                                        style="border-radius: 16px;" required>
+                                    <option value="" disabled selected>Select category</option>
+                                    <option value="poultry">Poultry</option>
+                                    <option value="vegetables">Vegetables</option>
+                                    <option value="fruits">Fruits</option>
+                                    <option value="roots">Root Vegetables</option>
+                                    <option value="herbs">Herbs</option>
+                                    <option value="eggs">Eggs</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-tags text-success me-1"></i>
+                                    Tags (comma separated)
+                                </label>
+                                <input type="text" name="tags" class="form-control form-control-lg bg-light border-0"
+                                       placeholder="organic, fresh, local" style="border-radius: 16px;">
+                            </div>
+                        </div>
+
+                        <!-- Pricing & Stock -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-currency-dollar text-success me-1"></i>
+                                    Price <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0">$</span>
+                                    <input type="number" step="0.01" name="price" class="form-control form-control-lg bg-light border-0"
+                                           placeholder="0.00" required style="border-radius: 0 16px 16px 0;">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-percent text-success me-1"></i>
+                                    Discount Price
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0">$</span>
+                                    <input type="number" step="0.01" name="discountPrice" class="form-control form-control-lg bg-light border-0"
+                                           placeholder="0.00" style="border-radius: 0 16px 16px 0;">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-box text-success me-1"></i>
+                                    Stock Quantity <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" name="stock" class="form-control form-control-lg bg-light border-0"
+                                       placeholder="100" required style="border-radius: 16px;">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-rulers text-success me-1"></i>
+                                    Unit
+                                </label>
+                                <select name="unit" class="form-select form-select-lg bg-light border-0" style="border-radius: 16px;">
+                                    <option value="kg">kg</option>
+                                    <option value="lb">lb</option>
+                                    <option value="piece">piece</option>
+                                    <option value="dozen">dozen</option>
+                                    <option value="bunch">bunch</option>
+                                    <option value="box">box</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Product Description -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-pencil-square text-success me-1"></i>
+                                Description
+                            </label>
+                            <textarea name="description" class="form-control bg-light border-0"
+                                      rows="4" placeholder="Describe your product, its benefits, and features..."
+                                      style="border-radius: 16px;"></textarea>
+                            <div class="d-flex justify-content-between mt-1">
+                                <small class="text-muted">Maximum 1000 characters</small>
+                                <small class="text-muted"><span id="charCount">0</span>/1000</small>
+                            </div>
+                        </div>
+
+                        <!-- Product Details -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-calendar text-success me-1"></i>
+                                    Harvest Date
+                                </label>
+                                <input type="date" name="harvestDate" class="form-control form-control-lg bg-light border-0"
+                                       style="border-radius: 16px;">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-clock text-success me-1"></i>
+                                    Expiry Date
+                                </label>
+                                <input type="date" name="expiryDate" class="form-control form-control-lg bg-light border-0"
+                                       style="border-radius: 16px;">
+                            </div>
+                        </div>
+
+                        <!-- Additional Options -->
+                        <div class="mb-4">
+                            <h6 class="fw-semibold mb-3">Product Features</h6>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="organic" id="organic">
+                                        <label class="form-check-label" for="organic">
+                                            <i class="bi bi-droplet text-success me-1"></i>
+                                            Organic
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="freshDaily" id="freshDaily">
+                                        <label class="form-check-label" for="freshDaily">
+                                            <i class="bi bi-sun text-success me-1"></i>
+                                            Fresh Daily
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="featured" id="featured">
+                                        <label class="form-check-label" for="featured">
+                                            <i class="bi bi-star text-success me-1"></i>
+                                            Featured Product
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="glutenFree" id="glutenFree">
+                                        <label class="form-check-label" for="glutenFree">
+                                            <i class="bi bi-flower2 text-success me-1"></i>
+                                            Gluten Free
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="nonGMO" id="nonGMO">
+                                        <label class="form-check-label" for="nonGMO">
+                                            <i class="bi bi-check-circle text-success me-1"></i>
+                                            Non-GMO
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="local" id="local">
+                                        <label class="form-check-label" for="local">
+                                            <i class="bi bi-house text-success me-1"></i>
+                                            Locally Grown
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SEO Section -->
+                        <div class="mb-4">
+                            <h6 class="fw-semibold mb-3">
+                                <i class="bi bi-search text-success me-1"></i>
+                                SEO Settings
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Meta Title</label>
+                                    <input type="text" name="metaTitle" class="form-control bg-light border-0"
+                                           placeholder="SEO title" style="border-radius: 16px;">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Meta Keywords</label>
+                                    <input type="text" name="metaKeywords" class="form-control bg-light border-0"
+                                           placeholder="SEO keywords" style="border-radius: 16px;">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Meta Description</label>
+                                    <textarea name="metaDescription" class="form-control bg-light border-0"
+                                              rows="2" placeholder="SEO description" style="border-radius: 16px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="d-flex gap-3 mt-4">
+                            <button type="submit" class="btn btn-success btn-lg flex-grow-1 py-3 rounded-pill shadow-lg" id="submitBtn">
+                                <i class="bi bi-check-circle me-2"></i>
+                                Add Product
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-lg px-5 rounded-pill" onclick="resetForm()">
+                                <i class="bi bi-arrow-repeat me-2"></i>
+                                Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Image Upload Card -->
+            <div class="card border-0 shadow-lg mb-4" style="border-radius: 32px; overflow: hidden;">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h5 class="fw-bold mb-0">
+                        <i class="bi bi-image text-success me-2"></i>
+                        Product Images
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Main Image Upload -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">
+                            Main Image <span class="text-danger">*</span>
+                        </label>
+                        <div class="upload-area" id="dropArea">
+                            <input type="file" name="image" id="mainImage" class="d-none" accept="image/*" required>
+                            <div class="text-center p-4" id="uploadPrompt">
+                                <i class="bi bi-cloud-arrow-up fs-1 text-success mb-3"></i>
+                                <h6 class="fw-bold">Drag & drop or click to upload</h6>
+                                <p class="small text-muted mb-3">Supported formats: JPG, PNG, WEBP (Max 5MB)</p>
+                                <button type="button" class="btn btn-outline-success rounded-pill" onclick="document.getElementById('mainImage').click()">
+                                    <i class="bi bi-folder2-open me-2"></i>Browse Files
+                                </button>
+                            </div>
+                            <div class="image-preview d-none" id="imagePreview">
+                                <img src="" alt="Preview" class="img-fluid rounded-4 mb-3">
+                                <button type="button" class="btn btn-sm btn-danger rounded-pill" onclick="removeImage()">
+                                    <i class="bi bi-trash me-1"></i>Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Images -->
+                    <div>
+                        <label class="form-label fw-semibold">
+                            Additional Images
+                        </label>
+                        <div class="gallery-upload">
+                            <input type="file" name="gallery" id="galleryImages" class="d-none" multiple accept="image/*">
+                            <div class="d-flex flex-wrap gap-2" id="galleryPreview"></div>
+                            <button type="button" class="btn btn-outline-success w-100 mt-2 rounded-pill" onclick="document.getElementById('galleryImages').click()">
+                                <i class="bi bi-plus-circle me-2"></i>Add More Images
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Variants Card -->
+            <div class="card border-0 shadow-lg mb-4" style="border-radius: 32px; overflow: hidden;">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h5 class="fw-bold mb-0">
+                        <i class="bi bi-diagram-3 text-success me-2"></i>
+                        Product Variants
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <p class="small text-muted mb-3">Add variants like size, weight, or packaging options</p>
+
+                    <div id="variantsContainer">
+                        <!-- Variant template will be added here -->
+                    </div>
+
+                    <button type="button" class="btn btn-outline-success w-100 rounded-pill" onclick="addVariant()">
+                        <i class="bi bi-plus-circle me-2"></i>Add Variant
+                    </button>
+                </div>
+            </div>
+
+            <!-- Publish Settings Card -->
+            <div class="card border-0 shadow-lg" style="border-radius: 32px; overflow: hidden;">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h5 class="fw-bold mb-0">
+                        <i class="bi bi-gear text-success me-2"></i>
+                        Publish Settings
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Status</label>
+                        <select name="status" class="form-select bg-light border-0" style="border-radius: 16px;">
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                            <option value="scheduled">Scheduled</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Publish Date</label>
+                        <input type="datetime-local" name="publishDate" class="form-control bg-light border-0" style="border-radius: 16px;">
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="notifyCustomers" id="notifyCustomers">
+                            <label class="form-check-label" for="notifyCustomers">
+                                Notify customers about new product
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 24px;">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title"><i class="bi bi-check-circle me-2"></i>Success!</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4 text-center">
+                <i class="bi bi-check-circle-fill text-success fs-1 mb-3"></i>
+                <h5>Product Added Successfully</h5>
+                <p class="text-muted mb-0">Your product has been added to the inventory.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a th:href="@{/admin/products}" class="btn btn-success">View Products</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #1A3A24, #2B5E3B);
+    }
+
+    .upload-area {
+        border: 2px dashed #dee2e6;
+        border-radius: 20px;
+        padding: 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .upload-area:hover {
+        border-color: var(--primary-green);
+        background: rgba(43, 94, 59, 0.05);
+    }
+
+    .upload-area.dragover {
+        border-color: var(--primary-green);
+        background: rgba(43, 94, 59, 0.1);
+    }
+
+    .image-preview {
+        text-align: center;
+    }
+
+    .image-preview img {
+        max-height: 200px;
+        width: auto;
+        margin: 0 auto;
+    }
+
+    .gallery-preview-item {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .gallery-preview-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .gallery-preview-item .remove {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        width: 20px;
+        height: 20px;
+        background: rgba(220, 53, 69, 0.9);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .form-control:focus, .form-select:focus {
+        box-shadow: 0 0 0 4px rgba(43, 94, 59, 0.1);
+        border-color: var(--primary-green);
+    }
+
+    .variant-item {
+        background: #f8f9fa;
+        border-radius: 16px;
+        padding: 15px;
+        margin-bottom: 15px;
+        position: relative;
+    }
+
+    .variant-remove {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: #dc3545;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    let variantCount = 0;
+    let galleryFiles = [];
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Character counter
+        const description = document.querySelector('textarea[name="description"]');
+        const charCount = document.getElementById('charCount');
+
+        description.addEventListener('input', function() {
+            charCount.textContent = this.value.length;
+        });
+
+        // Image upload drag & drop
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('mainImage');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => {
+                dropArea.classList.add('dragover');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => {
+                dropArea.classList.remove('dragover');
+            });
+        });
+
+        dropArea.addEventListener('drop', handleDrop, false);
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            fileInput.files = files;
+            handleFileSelect();
+        }
+
+        // Gallery images
+        document.getElementById('galleryImages').addEventListener('change', handleGallerySelect);
+    });
+
+    function handleFileSelect() {
+        const file = document.getElementById('mainImage').files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('uploadPrompt').classList.add('d-none');
+                const preview = document.getElementById('imagePreview');
+                preview.classList.remove('d-none');
+                preview.querySelector('img').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function removeImage() {
+        document.getElementById('mainImage').value = '';
+        document.getElementById('imagePreview').classList.add('d-none');
+        document.getElementById('uploadPrompt').classList.remove('d-none');
+    }
+
+    function handleGallerySelect() {
+        const files = document.getElementById('galleryImages').files;
+        const preview = document.getElementById('galleryPreview');
+        preview.innerHTML = '';
+
+        Array.from(files).forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'gallery-preview-item';
+                div.innerHTML = `
+                    <img src="${e.target.result}" alt="Preview">
+                    <span class="remove" onclick="removeGalleryImage(${index})">×</span>
+                `;
+                preview.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function removeGalleryImage(index) {
+        // Implementation for removing gallery images
+    }
+
+    function addVariant() {
+        variantCount++;
+        const container = document.getElementById('variantsContainer');
+        const variantHtml = `
+            <div class="variant-item" id="variant-${variantCount}">
+                <span class="variant-remove" onclick="removeVariant(${variantCount})">
+                    <i class="bi bi-x-circle"></i>
+                </span>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Variant Name</label>
+                        <input type="text" name="variants[${variantCount}][name]" class="form-control bg-white" placeholder="e.g., Size, Weight">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Variant Value</label>
+                        <input type="text" name="variants[${variantCount}][value]" class="form-control bg-white" placeholder="e.g., 1kg, Large">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Price</label>
+                        <input type="number" step="0.01" name="variants[${variantCount}][price]" class="form-control bg-white" placeholder="0.00">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Stock</label>
+                        <input type="number" name="variants[${variantCount}][stock]" class="form-control bg-white" placeholder="0">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">SKU</label>
+                        <input type="text" name="variants[${variantCount}][sku]" class="form-control bg-white" placeholder="Variant SKU">
+                    </div>
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', variantHtml);
+    }
+
+    function removeVariant(id) {
+        document.getElementById(`variant-${id}`).remove();
+    }
+
+    // Form submission
+    document.getElementById('productForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Adding Product...';
+        submitBtn.disabled = true;
+
+        // Simulate API call
+        setTimeout(() => {
+            submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Add Product';
+            submitBtn.disabled = false;
+
+            // Show success modal
+            const modal = new bootstrap.Modal(document.getElementById('successModal'));
+            modal.show();
+
+            // Optionally reset form
+            // this.reset();
+        }, 2000);
+    });
+
+    function resetForm() {
+        if (confirm('Are you sure you want to reset the form? All entered data will be lost.')) {
+            document.getElementById('productForm').reset();
+            removeImage();
+            document.getElementById('variantsContainer').innerHTML = '';
+            variantCount = 0;
+        }
+    }
+</script>
+<script src="/static/js/main.js"></script>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header}">
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container-fluid py-4 px-4">
+    <div class="row g-4">
+        <!-- Sidebar -->
+        <div class="col-lg-2">
+             <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden sticky-top" style="top: 100px;">
+                <div class="card-header bg-success text-white py-3">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-grid me-2"></i>Admin Menu</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a th:href="@{/admin/dashboard}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-house-door me-2"></i>Dashboard
+                    </a>
+                    <a th:href="@{/admin/products}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-box-seam me-2"></i>Manage Products
+                    </a>
+                    <a th:href="@{/admin/orders}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-cart-check me-2"></i>Orders
+                    </a>
+                    <a th:href="@{/admin/messages}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-chat-dots me-2"></i>Messages
+                    </a>
+                    <a th:href="@{/admin/reports}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-graph-up me-2"></i>Reports
+                    </a>
+                    <a th:href="@{/admin/settings}" class="list-group-item list-group-item-action active bg-success border-success py-3">
+                        <i class="bi bi-gear me-2"></i>Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0 py-3">
+                    <h5 class="fw-bold mb-0">System Settings</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">System Status</label>
+                            <div class="p-3 bg-light rounded-3 d-flex align-items-center">
+                                <span class="badge bg-success rounded-circle p-2 me-3">&nbsp;</span>
+                                <span th:text="${systemStatus}">Healthy</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Application Version</label>
+                            <div class="p-3 bg-light rounded-3" th:text="${appVersion}">1.0.0</div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-secondary rounded-pill px-4">Reset Defaults</button>
+                        <button class="btn btn-success rounded-pill px-4">Save Configuration</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

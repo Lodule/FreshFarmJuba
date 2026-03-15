@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header}">
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container-fluid py-4 px-4">
+    <div class="row g-4">
+        <!-- Sidebar placeholder -->
+        <div class="col-lg-2">
+            <!-- Reuse sidebar from dashboard or include as fragment -->
+             <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden sticky-top" style="top: 100px;">
+                <div class="card-header bg-success text-white py-3">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-grid me-2"></i>Admin Menu</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a th:href="@{/admin/dashboard}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-house-door me-2"></i>Dashboard
+                    </a>
+                    <a th:href="@{/admin/products}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-box-seam me-2"></i>Manage Products
+                    </a>
+                    <a th:href="@{/admin/orders}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-cart-check me-2"></i>Orders
+                    </a>
+                    <a th:href="@{/admin/messages}" class="list-group-item list-group-item-action active bg-success border-success py-3">
+                        <i class="bi bi-chat-dots me-2"></i>Messages
+                    </a>
+                    <a th:href="@{/admin/reports}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-graph-up me-2"></i>Reports
+                    </a>
+                    <a th:href="@{/admin/settings}" class="list-group-item list-group-item-action py-3">
+                        <i class="bi bi-gear me-2"></i>Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-chat-dots text-success me-2"></i>Customer Messages</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="px-4 py-3">Date</th>
+                                    <th class="py-3">Sender</th>
+                                    <th class="py-3">Subject</th>
+                                    <th class="py-3">Status</th>
+                                    <th class="py-3 text-end pe-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="message : ${messages}" th:classappend="${!message.isRead ? 'fw-bold' : ''}">
+                                    <td class="px-4 py-3" th:text="${#temporals.format(message.createdAt, 'dd MMM yyyy HH:mm')}">Date</td>
+                                    <td class="py-3">
+                                        <div th:text="${message.name}">Name</div>
+                                        <small class="text-muted" th:text="${message.email}">Email</small>
+                                    </td>
+                                    <td class="py-3" th:text="${message.subject}">Subject</td>
+                                    <td class="py-3">
+                                        <span th:if="${!message.isRead}" class="badge bg-danger">New</span>
+                                        <span th:if="${message.isRead}" class="badge bg-secondary">Read</span>
+                                    </td>
+                                    <td class="py-3 text-end pe-4">
+                                        <button class="btn btn-sm btn-outline-success rounded-pill px-3"
+                                                th:onclick="'viewMessage(' + ${message.id} + ')'">View</button>
+                                        <a th:href="@{/admin/messages/delete/{id}(id=${message.id})}"
+                                           class="btn btn-sm btn-outline-danger rounded-pill px-3 ms-1"
+                                           onclick="return confirm('Delete this message?')">Delete</a>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(messages)}">
+                                    <td colspan="5" class="text-center py-5">
+                                        <i class="bi bi-chat-left-dots fs-1 text-muted d-block mb-3"></i>
+                                        <p class="text-muted">No messages found.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Message Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-0 bg-success text-white py-3">
+                <h5 class="modal-title fw-bold" id="msgSubject">Subject</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="d-flex mb-3">
+                    <div class="bg-light rounded-circle p-3 me-3">
+                        <i class="bi bi-person text-success fs-4"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-0" id="msgSender">Name</h6>
+                        <small class="text-muted" id="msgEmail">Email</small>
+                    </div>
+                </div>
+                <div class="p-3 bg-light rounded-3 mb-3">
+                    <p class="mb-0" id="msgContent">Message content...</p>
+                </div>
+                <small class="text-muted d-block text-end" id="msgDate">Date</small>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+                <a href="#" id="replyBtn" class="btn btn-success rounded-pill px-4">Reply via Email</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const messages = /*[[${messages}]]*/ [];
+    const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+
+    function viewMessage(id) {
+        const msg = messages.find(m => m.id === id);
+        if (msg) {
+            document.getElementById('msgSubject').textContent = msg.subject;
+            document.getElementById('msgSender').textContent = msg.name;
+            document.getElementById('msgEmail').textContent = msg.email;
+            document.getElementById('msgContent').textContent = msg.content;
+            document.getElementById('msgDate').textContent = new Date(msg.createdAt).toLocaleString();
+            document.getElementById('replyBtn').href = 'mailto:' + msg.email + '?subject=Re: ' + msg.subject;
+
+            messageModal.show();
+
+            // Mark as read in backend
+            fetch('/admin/messages/read/' + id, { method: 'POST' });
+        }
+    }
+</script>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

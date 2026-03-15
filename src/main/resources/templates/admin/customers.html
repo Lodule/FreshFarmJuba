@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header}">
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container-fluid py-4 px-4">
+    <div class="row g-4">
+        <!-- Sidebar -->
+        <div class="col-lg-2">
+            <div th:replace="~{admin/dashboard :: sidebar_fragment}">
+                <!-- Fallback if fragment not extracted yet -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+                    <div class="card-header bg-success text-white py-3">
+                        <h5 class="mb-0 fw-bold"><i class="bi bi-grid me-2"></i>Admin Menu</h5>
+                    </div>
+                    <div class="list-group list-group-flush">
+                        <a th:href="@{/admin/dashboard}" class="list-group-item list-group-item-action py-3">
+                            <i class="bi bi-house-door me-2"></i>Dashboard
+                        </a>
+                        <a th:href="@{/admin/products}" class="list-group-item list-group-item-action py-3">
+                            <i class="bi bi-box-seam me-2"></i>Manage Products
+                        </a>
+                        <a th:href="@{/admin/orders}" class="list-group-item list-group-item-action py-3">
+                            <i class="bi bi-cart-check me-2"></i>Orders
+                        </a>
+                        <a th:href="@{/admin/customers}" class="list-group-item list-group-item-action active bg-success border-success py-3">
+                            <i class="bi bi-people me-2"></i>Customers
+                        </a>
+                        <a th:href="@{/admin/messages}" class="list-group-item list-group-item-action py-3">
+                            <i class="bi bi-chat-dots me-2"></i>Messages
+                        </a>
+                        <a th:href="@{/admin/reports}" class="list-group-item list-group-item-action py-3">
+                            <i class="bi bi-graph-up me-2"></i>Reports
+                        </a>
+                        <a th:href="@{/admin/settings}" class="list-group-item list-group-item-action py-3">
+                            <i class="bi bi-gear me-2"></i>Settings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-10">
+            <!-- Header Section -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 bg-gradient-primary text-white">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="fw-bold mb-1">Customer Management</h3>
+                            <p class="mb-0 opacity-75">View and manage your registered users and their activity.</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="bg-white bg-opacity-10 p-3 rounded-3 text-center" style="min-width: 120px;">
+                                <div class="h4 fw-bold mb-0" th:text="${totalCustomers}">0</div>
+                                <small class="opacity-75">Total Users</small>
+                            </div>
+                            <div class="bg-white bg-opacity-10 p-3 rounded-3 text-center" style="min-width: 120px;">
+                                <div class="h4 fw-bold mb-0" th:text="${newCustomersToday}">0</div>
+                                <small class="opacity-75">New Today</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters & Search -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <form class="row g-3 align-items-center">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control bg-light border-0" id="customerSearch" placeholder="Search by name, email or phone...">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select bg-light border-0">
+                                <option value="">All Account Types</option>
+                                <option value="customer">Individual</option>
+                                <option value="business">Business</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select bg-light border-0">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="unverified">Unverified</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success w-100 rounded-pill">
+                                <i class="bi bi-filter me-2"></i>Apply Filters
+                            </button>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <button type="button" class="btn btn-outline-success w-100 rounded-pill">
+                                <i class="bi bi-download me-2"></i>Export
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Customers Table -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                        <tr>
+                            <th class="px-4 py-3">User</th>
+                            <th class="py-3">Contact info</th>
+                            <th class="py-3">Account Type</th>
+                            <th class="py-3">Status</th>
+                            <th class="py-3">Joined Date</th>
+                            <th class="py-3 text-end pe-4">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="customer : ${customers}">
+                            <td class="px-4 py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-sm bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center fw-bold me-3"
+                                         style="width: 40px; height: 40px;"
+                                         th:text="${#strings.substring(customer.firstName,0,1) + #strings.substring(customer.lastName,0,1)}">
+                                        JD
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold" th:text="${customer.firstName + ' ' + customer.lastName}">John Doe</div>
+                                        <small class="text-muted" th:text="${'ID: #USER-' + customer.id}">#USER-101</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3">
+                                <div class="small"><i class="bi bi-envelope me-1"></i> <span th:text="${customer.email}">john@example.com</span></div>
+                                <div class="small text-muted"><i class="bi bi-telephone me-1"></i> <span th:text="${customer.phone}">+211 981 502 973</span></div>
+                            </td>
+                            <td class="py-3">
+                                <span th:if="${customer.businessName != null}" class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill">
+                                    <i class="bi bi-building me-1"></i> Business
+                                </span>
+                                <span th:if="${customer.businessName == null}" class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill">
+                                    <i class="bi bi-person me-1"></i> Individual
+                                </span>
+                            </td>
+                            <td class="py-3">
+                                <div class="form-check form-switch">
+                                    <form th:action="@{/admin/customers/toggle-status/{id}(id=${customer.id})}" method="post">
+                                        <input class="form-check-input" type="checkbox" role="switch"
+                                               th:checked="${customer.active}"
+                                               onchange="this.form.submit()">
+                                        <span th:text="${customer.active ? 'Active' : 'Inactive'}"
+                                              th:class="${customer.active ? 'small text-success fw-bold' : 'small text-danger fw-bold'}">
+                                            Active
+                                        </span>
+                                    </form>
+                                </div>
+                                <div th:if="${!customer.emailVerified}" class="small text-warning mt-1">
+                                    <i class="bi bi-exclamation-circle me-1"></i> Unverified
+                                </div>
+                            </td>
+                            <td class="py-3">
+                                <div class="small" th:text="${#temporals.format(customer.createdAt, 'dd MMM yyyy')}">12 Oct 2023</div>
+                                <div class="small text-muted" th:text="${#temporals.format(customer.createdAt, 'HH:mm')}">14:30</div>
+                            </td>
+                            <td class="py-3 text-end pe-4">
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-light rounded-circle" data-bs-toggle="dropdown">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm rounded-3">
+                                        <li><a class="dropdown-item" th:href="@{/admin/customers/view/{id}(id=${customer.id})}"><i class="bi bi-eye me-2"></i>View Details</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="bi bi-cart me-2"></i>Order History</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="bi bi-envelope me-2"></i>Send Message</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Delete Account</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Empty State -->
+                        <tr th:if="${#lists.isEmpty(customers)}">
+                            <td colspan="6" class="text-center py-5">
+                                <div class="py-4">
+                                    <i class="bi bi-people display-1 text-muted opacity-25"></i>
+                                    <h5 class="mt-3 text-muted">No customers found</h5>
+                                    <p class="text-muted small">Try adjusting your filters or search terms.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination -->
+                <div class="card-footer bg-white border-0 py-3">
+                    <nav>
+                        <ul class="pagination pagination-sm justify-content-end mb-0">
+                            <li class="page-item disabled"><a class="page-link rounded-circle me-1" href="#"><i class="bi bi-chevron-left"></i></a></li>
+                            <li class="page-item active"><a class="page-link rounded-circle me-1" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link rounded-circle me-1" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link rounded-circle me-1" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link rounded-circle" href="#"><i class="bi bi-chevron-right"></i></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #1A3A24, #2B5E3B);
+    }
+    .avatar-sm {
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+    }
+    .table thead th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        color: #6c757d;
+    }
+    .form-check-input:checked {
+        background-color: #198754;
+        border-color: #198754;
+    }
+    .dropdown-item {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+    .dropdown-item:hover {
+        background-color: rgba(25, 135, 84, 0.05);
+        color: #198754;
+    }
+</style>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

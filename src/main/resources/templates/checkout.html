@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header}">
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<!-- Checkout Progress Header -->
+<section class="bg-light py-4 border-bottom">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="checkout-steps">
+                    <div class="step completed">
+                        <div class="step-icon"><i class="bi bi-cart"></i></div>
+                        <div class="step-label">Cart</div>
+                    </div>
+                    <div class="step-line completed"></div>
+                    <div class="step active">
+                        <div class="step-icon"><i class="bi bi-credit-card"></i></div>
+                        <div class="step-label">Checkout</div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step">
+                        <div class="step-icon"><i class="bi bi-check-circle"></i></div>
+                        <div class="step-label">Complete</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-5">
+    <!-- Security Badge -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-10">
+            <div class="alert alert-success bg-opacity-10 border-0 d-flex align-items-center justify-content-between flex-wrap">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-shield-lock-fill fs-3 text-success me-3"></i>
+                    <div>
+                        <strong>Secure Checkout</strong>
+                        <p class="mb-0 small">Your information is encrypted and secure</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-3">
+                    <i class="bi bi-credit-card fs-2 text-muted"></i>
+                    <i class="bi bi-paypal fs-2 text-muted"></i>
+                    <i class="bi bi-cash fs-2 text-muted"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Main Checkout Form -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg" style="border-radius: 24px; overflow: hidden;">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h3 class="fw-bold mb-0">
+                        <i class="bi bi-truck text-success me-2"></i>
+                        Delivery Information
+                    </h3>
+                </div>
+
+                <div class="card-body p-4">
+                    <form th:action="@{/order}" method="post" id="checkoutForm">
+                        <!-- Contact Information -->
+                        <div class="mb-4">
+                            <h5 class="fw-semibold mb-3">Contact Information</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">
+                                        <i class="bi bi-person text-success me-1"></i>
+                                        Full Name <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control form-control-lg bg-light border-0"
+                                           name="customer.name" placeholder="John Doe" required
+                                           style="border-radius: 16px;">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">
+                                        <i class="bi bi-envelope text-success me-1"></i>
+                                        Email Address <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="email" class="form-control form-control-lg bg-light border-0"
+                                           name="customer.email" placeholder="john@example.com" required
+                                           style="border-radius: 16px;">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">
+                                        <i class="bi bi-phone text-success me-1"></i>
+                                        Phone Number <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="tel" class="form-control form-control-lg bg-light border-0"
+                                           name="customer.phone" placeholder="+211 XXX XXX XXX" required
+                                           style="border-radius: 16px;">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">
+                                        <i class="bi bi-telephone text-success me-1"></i>
+                                        Alternate Phone (Optional)
+                                    </label>
+                                    <input type="tel" class="form-control form-control-lg bg-light border-0"
+                                           name="alternatePhone" placeholder="+211 XXX XXX XXX"
+                                           style="border-radius: 16px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Address -->
+                        <div class="mb-4">
+                            <h5 class="fw-semibold mb-3">Delivery Address</h5>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">
+                                        <i class="bi bi-geo-alt text-success me-1"></i>
+                                        Street Address <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control form-control-lg bg-light border-0"
+                                           name="address" placeholder="Street address, P.O. Box" required
+                                           style="border-radius: 16px;">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">City/Area <span class="text-danger">*</span></label>
+                                    <select class="form-select form-select-lg bg-light border-0"
+                                            name="city" required style="border-radius: 16px;">
+                                        <option value="" disabled selected>Select area</option>
+                                        <option>Juba Town</option>
+                                        <option>Munuki</option>
+                                        <option>Gudele</option>
+                                        <option>Kator</option>
+                                        <option>Malakia</option>
+                                        <option>Custom</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Landmark (Optional)</label>
+                                    <input type="text" class="form-control form-control-lg bg-light border-0"
+                                           name="landmark" placeholder="Near market, school, etc."
+                                           style="border-radius: 16px;">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Delivery Instructions (Optional)</label>
+                                    <textarea class="form-control bg-light border-0"
+                                              name="deliveryInstructions" rows="2"
+                                              placeholder="Gate code, security contact, etc."
+                                              style="border-radius: 16px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Options -->
+                        <div class="mb-4">
+                            <h5 class="fw-semibold mb-3">Delivery Options</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-check card-radio p-3 border rounded-4">
+                                        <input class="form-check-input" type="radio" name="deliveryOption"
+                                               id="standardDelivery" value="standard" checked>
+                                        <label class="form-check-label w-100" for="standardDelivery">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <i class="bi bi-truck text-success fs-4 d-block mb-2"></i>
+                                                    <span class="fw-bold">Standard Delivery</span>
+                                                    <p class="small text-muted mb-0">3-5 business days</p>
+                                                </div>
+                                                <span class="fw-bold text-success">$5.00</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check card-radio p-3 border rounded-4">
+                                        <input class="form-check-input" type="radio" name="deliveryOption"
+                                               id="expressDelivery" value="express">
+                                        <label class="form-check-label w-100" for="expressDelivery">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <i class="bi bi-rocket text-success fs-4 d-block mb-2"></i>
+                                                    <span class="fw-bold">Express Delivery</span>
+                                                    <p class="small text-muted mb-0">Next day (Juba only)</p>
+                                                </div>
+                                                <span class="fw-bold text-success">$15.00</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="mb-4">
+                            <h5 class="fw-semibold mb-3">Payment Method</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-check card-radio p-3 border rounded-4">
+                                        <input class="form-check-input" type="radio" name="paymentMethod"
+                                               id="cashOnDelivery" value="cod" checked>
+                                        <label class="form-check-label w-100" for="cashOnDelivery">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-cash-stack text-success fs-3 me-3"></i>
+                                                <div>
+                                                    <span class="fw-bold">Cash on Delivery</span>
+                                                    <p class="small text-muted mb-0">Pay when you receive</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check card-radio p-3 border rounded-4">
+                                        <input class="form-check-input" type="radio" name="paymentMethod"
+                                               id="mobileMoney" value="mobile">
+                                        <label class="form-check-label w-100" for="mobileMoney">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-phone text-success fs-3 me-3"></i>
+                                                <div>
+                                                    <span class="fw-bold">Mobile Money</span>
+                                                    <p class="small text-muted mb-0">MTN / Zain</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check card-radio p-3 border rounded-4">
+                                        <input class="form-check-input" type="radio" name="paymentMethod"
+                                               id="bankTransfer" value="bank">
+                                        <label class="form-check-label w-100" for="bankTransfer">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-bank text-success fs-3 me-3"></i>
+                                                <div>
+                                                    <span class="fw-bold">Bank Transfer</span>
+                                                    <p class="small text-muted mb-0">Instant confirmation</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check card-radio p-3 border rounded-4">
+                                        <input class="form-check-input" type="radio" name="paymentMethod"
+                                               id="cardPayment" value="card">
+                                        <label class="form-check-label w-100" for="cardPayment">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-credit-card text-success fs-3 me-3"></i>
+                                                <div>
+                                                    <span class="fw-bold">Card Payment</span>
+                                                    <p class="small text-muted mb-0">Visa/Mastercard</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Additional Options -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="saveInfo" id="saveInfo">
+                                <label class="form-check-label" for="saveInfo">
+                                    Save this information for faster checkout next time
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="emailUpdates" id="emailUpdates">
+                                <label class="form-check-label" for="emailUpdates">
+                                    Receive order updates via email/SMS
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Order Notes -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Order Notes (Optional)</label>
+                            <textarea class="form-control bg-light border-0"
+                                      name="orderNotes" rows="2"
+                                      placeholder="Special requests, delivery time preferences, etc."
+                                      style="border-radius: 16px;"></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-success btn-lg w-100 py-3 rounded-pill fw-bold shadow-lg" id="placeOrderBtn">
+                            <span class="btn-text"><i class="bi bi-shield-check me-2"></i>Place Order - <span id="totalAmount">$0.00</span></span>
+                            <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                        </button>
+
+                        <p class="text-center small text-muted mt-3">
+                            By placing your order, you agree to our
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a> and
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Summary Sidebar -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-lg sticky-top" style="border-radius: 24px; top: 100px;">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h5 class="fw-bold mb-0">
+                        <i class="bi bi-bag-check text-success me-2"></i>
+                        Order Summary
+                    </h5>
+                </div>
+
+                <div class="card-body p-4">
+                    <!-- Cart Items -->
+                    <div class="cart-items mb-3" style="max-height: 300px; overflow-y: auto;">
+                        <div class="d-flex align-items-center mb-3" th:each="item : ${cartItems}">
+                            <img th:src="${item.image}" class="rounded-3 me-3"
+                                 style="width: 60px; height: 60px; object-fit: cover;">
+                            <div class="flex-grow-1">
+                                <h6 class="fw-bold mb-1" th:text="${item.name}">Product Name</h6>
+                                <div class="d-flex justify-content-between small">
+                                    <span th:text="'Qty: ' + ${item.quantity}">Qty: 2</span>
+                                    <span class="text-success fw-bold" th:text="'$' + ${item.subtotal}">$24.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Breakdown -->
+                    <div class="price-breakdown">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Subtotal</span>
+                            <span class="fw-bold" id="subtotal">$0.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Delivery Fee</span>
+                            <span class="fw-bold" id="deliveryFee">$5.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Tax (5%)</span>
+                            <span class="fw-bold" id="tax">$0.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Discount</span>
+                            <span class="fw-bold text-danger" id="discount">-$0.00</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="h5 fw-bold">Total</span>
+                            <span class="h4 fw-bold text-success" id="total">$0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Promo Code -->
+                    <div class="promo-section mb-4">
+                        <label class="form-label fw-semibold">Promo Code</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0"
+                                   placeholder="Enter code" id="promoCode"
+                                   style="border-radius: 50px 0 0 50px;">
+                            <button class="btn btn-outline-success" type="button"
+                                    style="border-radius: 0 50px 50px 0;"
+                                    onclick="applyPromo()">
+                                Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Estimate -->
+                    <div class="delivery-estimate bg-light rounded-4 p-3 mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-truck fs-2 text-success me-3"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1">Estimated Delivery</h6>
+                                <p class="small text-muted mb-0" id="deliveryEstimate">
+                                    Mar 20 - Mar 22, 2024
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trust Badges -->
+                    <div class="trust-badges text-center">
+                        <div class="d-flex justify-content-around mb-3">
+                            <i class="bi bi-shield-check text-success fs-4" title="Secure Payment"></i>
+                            <i class="bi bi-truck text-success fs-4" title="Fast Delivery"></i>
+                            <i class="bi bi-arrow-repeat text-success fs-4" title="Easy Returns"></i>
+                            <i class="bi bi-headset text-success fs-4" title="24/7 Support"></i>
+                        </div>
+                        <p class="small text-muted">
+                            <i class="bi bi-lock-fill me-1"></i>
+                            Secure SSL Encryption
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Money Modal -->
+<div class="modal fade" id="mobileMoneyModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 24px;">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title"><i class="bi bi-phone me-2"></i>Mobile Money Payment</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="text-center mb-4">
+                    <i class="bi bi-phone fs-1 text-success"></i>
+                    <h6 class="mt-2">Pay with MTN Mobile Money or Zain Cash</h6>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Select Operator</label>
+                    <div class="d-flex gap-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="operator" id="mtn" checked>
+                            <label class="form-check-label" for="mtn">MTN</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="operator" id="zain">
+                            <label class="form-check-label" for="zain">Zain</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Mobile Money Number</label>
+                    <input type="tel" class="form-control" placeholder="07XX XXX XXX">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Amount</label>
+                    <input type="text" class="form-control" value="$52.50" readonly disabled>
+                </div>
+
+                <p class="small text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    You'll receive a prompt on your phone to confirm payment.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" onclick="processMobileMoney()">
+                    <i class="bi bi-send me-2"></i>Send Payment Request
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Terms Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 24px;">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Terms of Service</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <p>By placing an order with Fresh Farm Juba, you agree to:</p>
+                <ul class="small">
+                    <li>Provide accurate delivery information</li>
+                    <li>Accept our delivery terms and conditions</li>
+                    <li>Agree to our cancellation and refund policy</li>
+                    <li>Receive order updates via SMS/email</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Privacy Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 24px;">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Privacy Policy</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <p>Your information is secure and will only be used for:</p>
+                <ul class="small">
+                    <li>Processing your order</li>
+                    <li>Delivery coordination</li>
+                    <li>Customer support</li>
+                    <li>Order updates</li>
+                </ul>
+                <p class="mb-0">We never share your data with third parties.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .checkout-steps {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    .step {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .step-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: white;
+        border: 3px solid #dee2e6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px;
+        font-size: 1.2rem;
+        color: #6c757d;
+        transition: all 0.3s ease;
+    }
+
+    .step.completed .step-icon {
+        background: var(--success-green);
+        border-color: var(--success-green);
+        color: white;
+    }
+
+    .step.active .step-icon {
+        border-color: var(--primary-green);
+        color: var(--primary-green);
+        transform: scale(1.1);
+    }
+
+    .step-line {
+        flex: 1;
+        height: 3px;
+        background: #dee2e6;
+        margin: 0 15px;
+        max-width: 100px;
+    }
+
+    .step-line.completed {
+        background: var(--success-green);
+    }
+
+    .card-radio {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .card-radio:hover {
+        border-color: var(--primary-green) !important;
+        background: rgba(43, 94, 59, 0.05);
+    }
+
+    .card-radio .form-check-input:checked ~ .form-check-label {
+        color: var(--primary-green);
+    }
+
+    .card-radio:has(.form-check-input:checked) {
+        border-color: var(--primary-green) !important;
+        background: rgba(43, 94, 59, 0.1);
+    }
+
+    .sticky-top {
+        position: sticky;
+        top: 100px;
+    }
+
+    .form-control:focus, .form-select:focus {
+        box-shadow: 0 0 0 4px rgba(43, 94, 59, 0.1);
+        border-color: var(--primary-green);
+    }
+
+    /* Loading animation */
+    .btn-loading {
+        pointer-events: none;
+        opacity: 0.8;
+    }
+
+    .btn-loading .spinner-border {
+        display: inline-block !important;
+    }
+
+    /* Cart items scrollbar */
+    .cart-items::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .cart-items::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .cart-items::-webkit-scrollbar-thumb {
+        background: var(--primary-green);
+        border-radius: 10px;
+    }
+</style>
+
+<script>
+    // Initialize checkout
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCartData();
+        updateOrderSummary();
+        setupPaymentHandlers();
+    });
+
+    // Load cart data from localStorage or session
+    function loadCartData() {
+        // This would typically come from your cart state
+        const sampleCart = [
+            { name: 'Premium Broilers', image: '/images/broiler.webp', quantity: 2, price: 12.99, subtotal: 25.98 },
+            { name: 'Organic Vegetables', image: '/images/vegetables.jpg', quantity: 1, price: 8.50, subtotal: 8.50 },
+            { name: 'Fresh Eggs (Dozen)', image: '/images/eggs.jpg', quantity: 3, price: 4.99, subtotal: 14.97 }
+        ];
+
+        // Update totals
+        const subtotal = sampleCart.reduce((sum, item) => sum + item.subtotal, 0);
+        document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+        updateOrderSummary();
+    }
+
+    // Update order summary based on delivery option
+    function updateOrderSummary() {
+        const subtotal = parseFloat(document.getElementById('subtotal').textContent.replace('$', ''));
+        const deliveryOption = document.querySelector('input[name="deliveryOption"]:checked');
+        let deliveryFee = 5.00;
+
+        if (deliveryOption && deliveryOption.value === 'express') {
+            deliveryFee = 15.00;
+            document.getElementById('deliveryEstimate').textContent = 'Tomorrow, Mar 19, 2024';
+        } else {
+            document.getElementById('deliveryEstimate').textContent = 'Mar 20 - Mar 22, 2024';
+        }
+
+        const tax = subtotal * 0.05;
+        const discount = 0; // Would be calculated from promo code
+        const total = subtotal + deliveryFee + tax - discount;
+
+        document.getElementById('deliveryFee').textContent = '$' + deliveryFee.toFixed(2);
+        document.getElementById('tax').textContent = '$' + tax.toFixed(2);
+        document.getElementById('discount').textContent = '-$' + discount.toFixed(2);
+        document.getElementById('total').textContent = '$' + total.toFixed(2);
+        document.getElementById('totalAmount').textContent = '$' + total.toFixed(2);
+    }
+
+    // Setup payment method handlers
+    function setupPaymentHandlers() {
+        const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
+        paymentRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'mobile') {
+                    // Show mobile money modal
+                    new bootstrap.Modal(document.getElementById('mobileMoneyModal')).show();
+                }
+            });
+        });
+    }
+
+    // Apply promo code
+    function applyPromo() {
+        const promoCode = document.getElementById('promoCode').value;
+        if (promoCode.toUpperCase() === 'FARM10') {
+            const discount = parseFloat(document.getElementById('subtotal').textContent.replace('$', '')) * 0.1;
+            document.getElementById('discount').textContent = '-$' + discount.toFixed(2);
+            updateOrderSummary();
+            showToast('Promo code applied! 10% discount', 'success');
+        } else if (promoCode) {
+            showToast('Invalid promo code', 'error');
+        }
+    }
+
+    // Process mobile money payment
+    function processMobileMoney() {
+        const operator = document.querySelector('input[name="operator"]:checked').id;
+        const number = document.querySelector('#mobileMoneyModal input[type="tel"]').value;
+
+        if (!number) {
+            showToast('Please enter your mobile money number', 'error');
+            return;
+        }
+
+        // Simulate payment request
+        showToast('Payment request sent to your phone. Please confirm.', 'success');
+
+        setTimeout(() => {
+            bootstrap.Modal.getInstance(document.getElementById('mobileMoneyModal')).hide();
+            showToast('Payment confirmed! Proceeding with order...', 'success');
+        }, 2000);
+    }
+
+    // Form submission
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const submitBtn = document.getElementById('placeOrderBtn');
+        submitBtn.classList.add('btn-loading');
+        submitBtn.disabled = true;
+
+        // Simulate order processing
+        setTimeout(() => {
+            submitBtn.classList.remove('btn-loading');
+            submitBtn.disabled = false;
+
+            // Redirect to success page
+            window.location.href = '/order/success';
+        }, 2000);
+    });
+
+    // Toast notification
+    function showToast(message, type = 'success') {
+        const toastContainer = document.createElement('div');
+        toastContainer.className = 'position-fixed bottom-0 end-0 p-3';
+        toastContainer.style.zIndex = '9999';
+
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'} border-0 show`;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        `;
+
+        toastContainer.appendChild(toast);
+        document.body.appendChild(toastContainer);
+
+        setTimeout(() => {
+            toast.remove();
+            toastContainer.remove();
+        }, 3000);
+    }
+
+    // Listen for delivery option changes
+    document.querySelectorAll('input[name="deliveryOption"]').forEach(radio => {
+        radio.addEventListener('change', updateOrderSummary);
+    });
+
+    // Save info checkbox
+    document.getElementById('saveInfo').addEventListener('change', function(e) {
+        if (e.target.checked) {
+            // Save to localStorage
+            const formData = {
+                name: document.querySelector('input[name="customer.name"]').value,
+                email: document.querySelector('input[name="customer.email"]').value,
+                phone: document.querySelector('input[name="customer.phone"]').value,
+                address: document.querySelector('input[name="address"]').value
+            };
+            localStorage.setItem('checkoutInfo', JSON.stringify(formData));
+        }
+    });
+
+    // Load saved info
+    const savedInfo = localStorage.getItem('checkoutInfo');
+    if (savedInfo) {
+        const info = JSON.parse(savedInfo);
+        document.querySelector('input[name="customer.name"]').value = info.name || '';
+        document.querySelector('input[name="customer.email"]').value = info.email || '';
+        document.querySelector('input[name="customer.phone"]').value = info.phone || '';
+        document.querySelector('input[name="address"]').value = info.address || '';
+    }
+</script>
+<script src="/static/js/main.js"></script>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+
+</html>

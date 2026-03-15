@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="header">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Farm Juba - Quality Organic Farm Products</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-green: #2B5E3B;
+            --secondary-green: #4A7856;
+            --accent-gold: #D4AF37;
+            --soft-cream: #F8F6F0;
+            --deep-forest: #1A3A24;
+            --error-red: #DC3545;
+            --success-green: #28A745;
+            --warning-orange: #FD7E14;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --bg-light: #F9FAFB;
+            --nav-height: 80px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-dark);
+            background: var(--bg-light);
+            overflow-x: hidden;
+            padding-top: var(--nav-height);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        .navbar {
+            height: var(--nav-height);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(26, 58, 36, 0.95) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar.scrolled {
+            height: 70px;
+            background: var(--deep-forest) !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .nav-link {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.85) !important;
+            padding: 0.5rem 1.2rem !important;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-gold) !important;
+        }
+
+        .btn-auth {
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .brand-logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: white !important;
+            letter-spacing: -0.5px;
+        }
+
+        .cart-icon-wrapper {
+            position: relative;
+            padding: 8px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .cart-icon-wrapper:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent-gold);
+            color: var(--deep-forest);
+            font-weight: 800;
+            font-size: 0.7rem;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid var(--deep-forest);
+        }
+
+        /* Sidebar Styles */
+        .offcanvas {
+            border-left: none;
+            width: 320px !important;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            border-radius: 12px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding-left: 25px;
+        }
+
+        .sidebar-link i {
+            font-size: 1.2rem;
+            margin-right: 15px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-link.active {
+            background: var(--accent-gold);
+            color: var(--deep-forest);
+        }
+
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loader-leaf {
+            font-size: 3rem;
+            color: var(--primary-green);
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Page Loader -->
+<div class="page-loader" id="pageLoader">
+    <i class="bi bi-leaf-fill loader-leaf mb-3"></i>
+    <h4 class="fw-bold text-success">Fresh Farm Juba</h4>
+    <div class="spinner-border spinner-border-sm text-success mt-2" role="status"></div>
+</div>
+
+<!-- Navigation Fragment -->
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNavbar">
+    <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand brand-logo d-flex align-items-center" th:href="@{/}">
+            <i class="bi bi-tree-fill text-warning me-2"></i>
+            <span>FRESH FARM <span class="text-warning">JUBA</span></span>
+        </a>
+
+        <!-- Mobile Toggles -->
+        <div class="d-flex align-items-center order-lg-3">
+            <a th:href="@{/cart}" class="cart-icon-wrapper text-white me-2">
+                <i class="bi bi-bag-heart fs-5"></i>
+                <span class="cart-badge" id="cartCount">0</span>
+            </a>
+
+            <button class="btn btn-link text-white p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#userSidebar">
+                <i class="bi bi-grid-3x3-gap-fill fs-4"></i>
+            </button>
+
+            <button class="navbar-toggler border-0 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <i class="bi bi-list fs-2"></i>
+            </button>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="collapse navbar-collapse order-lg-2 justify-content-center" id="navContent">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/products}">Shop</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/about}">Our Story</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/contact}">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- User Sidebar (Offcanvas) -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="userSidebar" style="background: var(--deep-forest);">
+        <div class="offcanvas-header border-bottom border-white border-opacity-10 py-4">
+            <h5 class="offcanvas-title text-white fw-bold">
+                <i class="bi bi-person-circle me-2 text-warning"></i>Account Menu
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+
+        <div class="offcanvas-body d-flex flex-column p-4">
+            <!-- User Info Section -->
+            <div sec:authorize="isAuthenticated()" class="mb-4 text-center">
+                <div class="avatar-circle mx-auto mb-3 bg-warning text-dark d-flex align-items-center justify-content-center" style="width: 64px; height: 64px; border-radius: 50%; font-size: 1.5rem; font-weight: 800;">
+                    <span th:text="${#strings.substring(T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication().getName(), 0, 1).toUpperCase()}">U</span>
+                </div>
+                <h6 class="text-white mb-0 fw-bold" sec:authentication="name">User Email</h6>
+                <p class="text-white-50 small" sec:authentication="principal.authorities">Role</p>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="mb-auto">
+                <a th:href="@{/}" class="sidebar-link">
+                    <i class="bi bi-house-door"></i>Home
+                </a>
+                <a th:href="@{/products}" class="sidebar-link">
+                    <i class="bi bi-shop"></i>Browse Products
+                </a>
+                <a th:href="@{/cart}" class="sidebar-link">
+                    <i class="bi bi-bag"></i>My Shopping Cart
+                </a>
+
+                <div class="border-top border-white border-opacity-10 my-3"></div>
+
+                <div sec:authorize="hasRole('ADMIN')">
+                    <h6 class="text-white-50 small fw-bold mb-3 px-3">ADMINISTRATION</h6>
+                    <a th:href="@{/admin/dashboard}" class="sidebar-link active">
+                        <i class="bi bi-speedometer2"></i>Admin Dashboard
+                    </a>
+                    <a th:href="@{/admin/products}" class="sidebar-link">
+                        <i class="bi bi-box-seam"></i>Manage Inventory
+                    </a>
+                    <a th:href="@{/admin/orders}" class="sidebar-link">
+                        <i class="bi bi-receipt"></i>Customer Orders
+                    </a>
+                </div>
+
+                <div sec:authorize="hasRole('USER')">
+                    <h6 class="text-white-50 small fw-bold mb-3 px-3">MY ACCOUNT</h6>
+                    <a th:href="@{/orders/my}" class="sidebar-link">
+                        <i class="bi bi-clock-history"></i>Order History
+                    </a>
+                    <a th:href="@{/profile}" class="sidebar-link">
+                        <i class="bi bi-person-gear"></i>Settings
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Section -->
+            <div class="mt-4 pt-4 border-top border-white border-opacity-10">
+                <div sec:authorize="!isAuthenticated()">
+                    <div class="d-grid gap-2">
+                        <a th:href="@{/login}" class="btn btn-warning rounded-pill fw-bold">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                        </a>
+                        <a th:href="@{/register}" class="btn btn-outline-light rounded-pill fw-bold">
+                            <i class="bi bi-person-plus me-2"></i>Join Now
+                        </a>
+                    </div>
+                </div>
+
+                <div sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-outline-danger w-100 rounded-pill fw-bold">
+                            <i class="bi bi-box-arrow-right me-2"></i>Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<footer th:fragment="footer" class="bg-dark text-white pt-5 pb-4 mt-auto">
+    <div class="container">
+        <div class="row g-4 mb-4">
+            <div class="col-lg-4">
+                <h4 class="fw-bold text-warning mb-3">Fresh Farm Juba</h4>
+                <p class="text-white-50">Empowering South Sudan with premium organic produce and sustainable farming practices. From our farm directly to your table.</p>
+                <div class="d-flex gap-3">
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <h6 class="fw-bold mb-3">Quick Links</h6>
+                <ul class="list-unstyled text-white-50">
+                    <li class="mb-2"><a th:href="@{/}" class="text-decoration-none text-reset">Home</a></li>
+                    <li class="mb-2"><a th:href="@{/products}" class="text-decoration-none text-reset">Shop</a></li>
+                    <li class="mb-2"><a th:href="@{/about}" class="text-decoration-none text-reset">About Us</a></li>
+                    <li class="mb-2"><a th:href="@{/contact}" class="text-decoration-none text-reset">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-4">
+                <h6 class="fw-bold mb-3">Contact Info</h6>
+                <ul class="list-unstyled text-white-50">
+                    <li class="mb-2"><i class="bi bi-geo-alt text-warning me-2"></i>Juba, South Sudan</li>
+                    <li class="mb-2"><i class="bi bi-telephone text-warning me-2"></i>+211 981 502 973</li>
+                    <li class="mb-2"><i class="bi bi-envelope text-warning me-2"></i>info@freshfarmjuba.com</li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-4">
+                <h6 class="fw-bold mb-3">Newsletter</h6>
+                <p class="small text-white-50">Subscribe to get updates on harvest dates.</p>
+                <div class="input-group">
+                    <input type="email" class="form-control bg-transparent border-secondary text-white" placeholder="Email">
+                    <button class="btn btn-warning"><i class="bi bi-send"></i></button>
+                </div>
+            </div>
+        </div>
+        <hr class="border-secondary">
+        <div class="text-center">
+            <p class="text-white-50 small mb-0">&copy; 2026 Fresh Farm Juba. Handcrafted with care.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+    // Initialize AOS
+    if (typeof AOS !== 'undefined') {
+        AOS.init({ duration: 800, once: true });
+    }
+
+    // Page Loader
+    window.addEventListener('load', function() {
+        const loader = document.getElementById('pageLoader');
+        if(loader) {
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => { loader.style.display = 'none'; }, 400);
+            }, 400);
+        }
+    });
+
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('mainNavbar');
+        if (navbar) {
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        }
+    });
+</script>
+</body>
+</html>

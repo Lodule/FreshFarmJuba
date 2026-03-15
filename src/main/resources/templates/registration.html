@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header}">
+</head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+
+<!-- Page Header -->
+<div class="bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h1 class="display-4 fw-bold mb-3">Create an Account</h1>
+                <p class="lead mb-0">Join Fresh Farm Juba to enjoy exclusive benefits and faster checkout</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-lg" style="border-radius: 32px; overflow: hidden;">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <h4 class="fw-bold mb-0">
+                        <i class="bi bi-person-plus text-success me-2"></i>
+                        Registration Form
+                    </h4>
+                    <p class="text-muted small mt-2">Fill in your details to create an account</p>
+                </div>
+
+                <div class="card-body p-4">
+                    <!-- Success/Error Messages -->
+                    <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show animate__animated animate__fadeIn" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        Registration successful! Please check your email to verify your account.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
+                    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show animate__animated animate__fadeIn" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <span th:text="${session.errorMessage}">Registration failed. Please try again.</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
+                    <form th:action="@{/register}" method="post" id="registrationForm" th:object="${user}">
+                        <!-- Account Type Selection -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">I am registering as:</label>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-check card-radio p-3 border rounded-4">
+                                        <input class="form-check-input" type="radio" name="accountType"
+                                               id="customerType" value="customer" checked>
+                                        <label class="form-check-label w-100" for="customerType">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-person text-success fs-3 me-3"></i>
+                                                <div>
+                                                    <span class="fw-bold">Customer</span>
+                                                    <p class="small text-muted mb-0">Shop for personal use</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check card-radio p-3 border rounded-4">
+                                        <input class="form-check-input" type="radio" name="accountType"
+                                               id="businessType" value="business">
+                                        <label class="form-check-label w-100" for="businessType">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-building text-success fs-3 me-3"></i>
+                                                <div>
+                                                    <span class="fw-bold">Business</span>
+                                                    <p class="small text-muted mb-0">Bulk orders & wholesale</p>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Personal Information -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-person text-success me-1"></i>
+                                    First Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control form-control-lg bg-light border-0"
+                                       name="firstName" placeholder="John" required
+                                       style="border-radius: 16px;">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-person text-success me-1"></i>
+                                    Last Name <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control form-control-lg bg-light border-0"
+                                       name="lastName" placeholder="Doe" required
+                                       style="border-radius: 16px;">
+                            </div>
+                        </div>
+
+                        <!-- Contact Information -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-envelope text-success me-1"></i>
+                                    Email Address <span class="text-danger">*</span>
+                                </label>
+                                <input type="email" class="form-control form-control-lg bg-light border-0"
+                                       name="email" placeholder="john@example.com" required
+                                       style="border-radius: 16px;">
+                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-phone text-success me-1"></i>
+                                    Phone Number <span class="text-danger">*</span>
+                                </label>
+                                <input type="tel" class="form-control form-control-lg bg-light border-0"
+                                       name="phone" placeholder="+211 XXX XXX XXX" required
+                                       style="border-radius: 16px;">
+                            </div>
+                        </div>
+
+                        <!-- Business Name (shown conditionally) -->
+                        <div class="mb-4" id="businessNameField" style="display: none;">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-building text-success me-1"></i>
+                                Business Name <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control form-control-lg bg-light border-0"
+                                   name="businessName" placeholder="Your Business Name"
+                                   style="border-radius: 16px;">
+                        </div>
+
+                        <!-- Password -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-lock text-success me-1"></i>
+                                    Password <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control form-control-lg bg-light border-0"
+                                           name="password" id="password" placeholder="••••••••" required
+                                           style="border-radius: 16px 0 0 16px;">
+                                    <button class="btn btn-outline-success" type="button" onclick="togglePassword('password')" style="border-radius: 0 16px 16px 0;">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="password-strength mt-2">
+                                    <div class="progress" style="height: 4px;">
+                                        <div class="progress-bar" id="passwordStrength" style="width: 0%;"></div>
+                                    </div>
+                                    <small class="text-muted" id="passwordHelp">Use at least 8 characters with letters & numbers</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-lock text-success me-1"></i>
+                                    Confirm Password <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control form-control-lg bg-light border-0"
+                                           name="confirmPassword" id="confirmPassword" placeholder="••••••••" required
+                                           style="border-radius: 16px 0 0 16px;">
+                                    <button class="btn btn-outline-success" type="button" onclick="togglePassword('confirmPassword')" style="border-radius: 0 16px 16px 0;">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="invalid-feedback" id="passwordMatchError">Passwords do not match</div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Address (Optional) -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="bi bi-geo-alt text-success me-1"></i>
+                                Default Delivery Address (Optional)
+                            </label>
+                            <textarea class="form-control bg-light border-0"
+                                      name="address" rows="2"
+                                      placeholder="Street address, city, landmark"
+                                      style="border-radius: 16px;"></textarea>
+                        </div>
+
+                        <!-- Terms and Conditions -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="agreeTerms" id="agreeTerms" required>
+                                <label class="form-check-label small" for="agreeTerms">
+                                    I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a> and
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a> <span class="text-danger">*</span>
+                                </label>
+                            </div>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" name="subscribeNewsletter" id="subscribeNewsletter">
+                                <label class="form-check-label small" for="subscribeNewsletter">
+                                    Subscribe to newsletter for updates and offers
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-success btn-lg w-100 py-3 rounded-pill fw-bold shadow-lg" id="registerBtn">
+                            <span class="btn-text"><i class="bi bi-person-plus me-2"></i>Create Account</span>
+                            <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                        </button>
+
+                        <!-- Login Link -->
+                        <div class="text-center mt-4">
+                            <p class="small text-muted">
+                                Already have an account?
+                                <a th:href="@{/login}" class="text-success fw-bold text-decoration-none">Sign in here</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Social Registration -->
+                <div class="card-footer bg-white border-0 pb-4 px-4">
+                    <div class="position-relative">
+                        <hr>
+                        <div class="position-absolute top-50 start-50 translate-middle bg-white px-3">
+                            <span class="small text-muted">or register with</span>
+                        </div>
+                    </div>
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-danger w-100 rounded-pill py-2" onclick="socialLogin('google')">
+                                <i class="bi bi-google me-2"></i>Google
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-primary w-100 rounded-pill py-2" onclick="socialLogin('facebook')">
+                                <i class="bi bi-facebook me-2"></i>Facebook
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefits Card -->
+            <div class="card border-0 shadow-sm mt-4 p-4" style="border-radius: 24px;">
+                <h6 class="fw-bold mb-3"><i class="bi bi-gift text-success me-2"></i>Benefits of Registering</h6>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <small>Faster checkout</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <small>Order history</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <small>Track orders</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <small>Special offers</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Terms Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="border-radius: 24px;">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title"><i class="bi bi-file-text me-2"></i>Terms and Conditions</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <h6>1. Account Registration</h6>
+                <p class="small text-muted">You must provide accurate and complete information when creating an account.</p>
+                <h6>2. Privacy</h6>
+                <p class="small text-muted">Your personal information is protected and will not be shared with third parties.</p>
+                <h6>3. Orders</h6>
+                <p class="small text-muted">All orders are subject to availability and acceptance.</p>
+                <h6>4. Communication</h6>
+                <p class="small text-muted">By creating an account, you agree to receive order-related communications.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Privacy Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 24px;">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title"><i class="bi bi-shield-lock me-2"></i>Privacy Policy</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <p class="small">We collect and use your personal information only for:</p>
+                <ul class="small">
+                    <li>Processing your orders</li>
+                    <li>Communicating about your orders</li>
+                    <li>Improving our services</li>
+                    <li>Sending promotional offers (with consent)</li>
+                </ul>
+                <p class="small mb-0">We never sell your data to third parties.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .card-radio {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .card-radio:hover {
+        border-color: var(--primary-green) !important;
+        background: rgba(43, 94, 59, 0.05);
+    }
+
+    .card-radio .form-check-input:checked ~ .form-check-label {
+        color: var(--primary-green);
+    }
+
+    .card-radio:has(.form-check-input:checked) {
+        border-color: var(--primary-green) !important;
+        background: rgba(43, 94, 59, 0.1);
+    }
+
+    .password-strength .progress-bar {
+        transition: width 0.3s ease;
+    }
+
+    .password-strength .progress-bar.weak {
+        background-color: #dc3545;
+    }
+
+    .password-strength .progress-bar.medium {
+        background-color: #ffc107;
+    }
+
+    .password-strength .progress-bar.strong {
+        background-color: #28a745;
+    }
+</style>
+
+<script>
+    // Toggle password visibility
+    function togglePassword(fieldId) {
+        const field = document.getElementById(fieldId);
+        const type = field.getAttribute('type') === 'password' ? 'text' : 'password';
+        field.setAttribute('type', type);
+
+        const icon = event.currentTarget.querySelector('i');
+        icon.classList.toggle('bi-eye');
+        icon.classList.toggle('bi-eye-slash');
+    }
+
+    // Show/hide business name field based on account type
+    document.querySelectorAll('input[name="accountType"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const businessField = document.getElementById('businessNameField');
+            if (this.value === 'business') {
+                businessField.style.display = 'block';
+                document.querySelector('input[name="businessName"]').required = true;
+            } else {
+                businessField.style.display = 'none';
+                document.querySelector('input[name="businessName"]').required = false;
+            }
+        });
+    });
+
+    // Password strength checker
+    document.getElementById('password').addEventListener('input', function() {
+        const password = this.value;
+        const strengthBar = document.getElementById('passwordStrength');
+        const helpText = document.getElementById('passwordHelp');
+
+        let strength = 0;
+
+        if (password.length >= 8) strength += 25;
+        if (password.match(/[a-z]+/)) strength += 25;
+        if (password.match(/[A-Z]+/)) strength += 25;
+        if (password.match(/[0-9]+/)) strength += 25;
+
+        strengthBar.style.width = strength + '%';
+
+        if (strength < 50) {
+            strengthBar.className = 'progress-bar bg-danger';
+            helpText.textContent = 'Weak password';
+        } else if (strength < 75) {
+            strengthBar.className = 'progress-bar bg-warning';
+            helpText.textContent = 'Medium password';
+        } else {
+            strengthBar.className = 'progress-bar bg-success';
+            helpText.textContent = 'Strong password';
+        }
+    });
+
+    // Password match validation
+    document.getElementById('confirmPassword').addEventListener('input', function() {
+        const password = document.getElementById('password').value;
+        const confirm = this.value;
+        const error = document.getElementById('passwordMatchError');
+
+        if (password !== confirm) {
+            this.classList.add('is-invalid');
+            error.style.display = 'block';
+        } else {
+            this.classList.remove('is-invalid');
+            error.style.display = 'none';
+        }
+    });
+
+    // Form submission
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        const password = document.getElementById('password').value;
+        const confirm = document.getElementById('confirmPassword').value;
+        const terms = document.getElementById('agreeTerms').checked;
+
+        if (password !== confirm) {
+            e.preventDefault();
+            showNotification('Passwords do not match', 'error');
+            return;
+        }
+
+        if (!terms) {
+            e.preventDefault();
+            showNotification('You must agree to the terms and conditions', 'error');
+            return;
+        }
+
+        const btn = document.getElementById('registerBtn');
+        btn.classList.add('btn-loading');
+        btn.disabled = true;
+        btn.querySelector('.btn-text').classList.add('d-none');
+        btn.querySelector('.spinner-border').classList.remove('d-none');
+    });
+
+    // Social login
+    function socialLogin(provider) {
+        showNotification(`Redirecting to ${provider} login...`, 'info');
+        // In production, redirect to OAuth provider
+        setTimeout(() => {
+            window.location.href = `/oauth2/authorization/${provider}`;
+        }, 1500);
+    }
+
+    // Toast notification
+    function showNotification(message, type = 'success') {
+        const toastContainer = document.querySelector('.toast-container') || (() => {
+            const container = document.createElement('div');
+            container.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+            document.body.appendChild(container);
+            return container;
+        })();
+
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center text-white bg-${type} border-0`;
+        toast.setAttribute('role', 'alert');
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        `;
+
+        toastContainer.appendChild(toast);
+        new bootstrap.Toast(toast, { autohide: true, delay: 3000 }).show();
+
+        setTimeout(() => toast.remove(), 3500);
+    }
+</script>
+<script src="/static/js/main.js"></script>
+
+<div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header}">
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments :: navbar}"></div>
+
+<div class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg overflow-hidden" style="border-radius: 24px;">
+                <div class="row g-0">
+                    <!-- Left Side: Image & Branding -->
+                    <div class="col-lg-5 d-none d-lg-block position-relative"
+                         th:style="'background: url(' + @{/images/layers.jpg} + ') no-repeat center center/cover;'">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 bg-success bg-opacity-75 d-flex align-items-center justify-content-center p-5 text-center text-white">
+                            <div>
+                                <i class="bi bi-flower1 display-1 mb-4"></i>
+                                <h2 class="fw-bold mb-3">Welcome to the Family</h2>
+                                <p class="lead">Join Fresh Farm Juba to access the finest organic produce and manage your orders seamlessly.</p>
+                                <div class="mt-4 pt-4 border-top border-white border-opacity-25">
+                                    <div class="d-flex align-items-center justify-content-center mb-3">
+                                        <i class="bi bi-check2-circle fs-4 me-2"></i>
+                                        <span>Exclusive Member Pricing</span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center mb-3">
+                                        <i class="bi bi-check2-circle fs-4 me-2"></i>
+                                        <span>Priority Harvest Delivery</span>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-check2-circle fs-4 me-2"></i>
+                                        <span>Business Wholesale Access</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Form -->
+                    <div class="col-lg-7 bg-white p-4 p-md-5">
+                        <div class="text-center mb-5">
+                            <h3 class="fw-bold text-success mb-2">Create Your Account</h3>
+                            <p class="text-muted">Fill in your details to start shopping fresh</p>
+                        </div>
+
+                        <!-- Alerts -->
+                        <div th:if="${param.success}" class="alert alert-success border-0 shadow-sm mb-4" style="border-radius: 12px;">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+                                <div>
+                                    <h6 class="alert-heading fw-bold mb-1">Registration Successful!</h6>
+                                    <p class="small mb-0">Please check your email to verify your account before logging in.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:if="${errorMessage}" class="alert alert-danger border-0 shadow-sm mb-4" style="border-radius: 12px;">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <span th:text="${errorMessage}">Error occurred</span>
+                        </div>
+
+                        <form th:action="@{/register}" method="post" th:object="${user}">
+                            <!-- Account Type -->
+                            <div class="mb-4">
+                                <label class="form-label small fw-bold text-uppercase text-muted">Register As</label>
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <input type="radio" class="btn-check" name="accountType" id="customerType" value="customer" th:field="*{accountType}" checked>
+                                        <label class="btn btn-outline-success w-100 py-3 rounded-4" for="customerType">
+                                            <i class="bi bi-person d-block fs-3 mb-1"></i>
+                                            <span class="fw-bold">Individual</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="radio" class="btn-check" name="accountType" id="businessType" value="business" th:field="*{accountType}">
+                                        <label class="btn btn-outline-success w-100 py-3 rounded-4" for="businessType">
+                                            <i class="bi bi-building d-block fs-3 mb-1"></i>
+                                            <span class="fw-bold">Business</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label small fw-bold text-muted">First Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0"><i class="bi bi-person text-success"></i></span>
+                                        <input type="text" class="form-control bg-light border-0" th:field="*{firstName}" placeholder="John" required>
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger x-small mt-1"></div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label small fw-bold text-muted">Last Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0"><i class="bi bi-person text-success"></i></span>
+                                        <input type="text" class="form-control bg-light border-0" th:field="*{lastName}" placeholder="Doe" required>
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger x-small mt-1"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-muted">Email Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0"><i class="bi bi-envelope text-success"></i></span>
+                                    <input type="email" class="form-control bg-light border-0" th:field="*{email}" placeholder="john@example.com" required>
+                                </div>
+                                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger x-small mt-1"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-muted">Phone Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0"><i class="bi bi-phone text-success"></i></span>
+                                    <input type="tel" class="form-control bg-light border-0" th:field="*{phone}" placeholder="+211 XXX XXX XXX" required>
+                                </div>
+                                <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger x-small mt-1"></div>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label small fw-bold text-muted">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0"><i class="bi bi-lock text-success"></i></span>
+                                        <input type="password" class="form-control bg-light border-0" th:field="*{password}" placeholder="••••••••" required>
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger x-small mt-1"></div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label small fw-bold text-muted">Confirm Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0"><i class="bi bi-shield-lock text-success"></i></span>
+                                        <input type="password" class="form-control bg-light border-0" th:field="*{confirmPassword}" placeholder="••••••••" required>
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="text-danger x-small mt-1"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="terms" required>
+                                <label class="form-check-label small text-muted" for="terms">
+                                    I agree to the <a href="#" class="text-success fw-bold">Terms & Conditions</a> and <a href="#" class="text-success fw-bold">Privacy Policy</a>.
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-success btn-lg w-100 py-3 rounded-pill fw-bold shadow-sm hover-up mb-4">
+                                Create My Account
+                            </button>
+
+                            <p class="text-center text-muted mb-0">
+                                Already have an account? <a th:href="@{/login}" class="text-success fw-bold text-decoration-none">Sign In</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+
+<style>
+    .input-group-text { border-radius: 12px 0 0 12px !important; }
+    .form-control { border-radius: 0 12px 12px 0 !important; padding: 0.75rem 1rem; }
+    .form-control:focus { box-shadow: none; background-color: #f0fdf4 !important; }
+    .btn-check:checked + .btn-outline-success { background-color: #f0fdf4; color: var(--primary-green); border-width: 2px; }
+    .hover-up { transition: all 0.3s ease; }
+    .hover-up:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
+    .x-small { font-size: 0.75rem; }
+</style>
+
+</body>
+</html>
