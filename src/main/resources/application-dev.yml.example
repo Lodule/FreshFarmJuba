@@ -1,13 +1,13 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/freshfarmjuba
-    username: postgres
-    password: loduleApps10
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:default_password} # Use a variable
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 5
       connection-timeout: 30000
-  
+
   jpa:
     hibernate:
       ddl-auto: update
