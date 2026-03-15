@@ -1,0 +1,15 @@
+.gradle
+build
+.idea
+*.iml
+local.properties
+.git
+.github
+Dockerfile
+docker-compose.yml
+kubernetes
+scripts
+docs
+README.md
+gradlew.bat
+gradle.properties
