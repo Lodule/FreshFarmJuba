@@ -18,7 +18,7 @@ spec:
       - name: freshfarmjuba
         image: freshfarmjuba:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 8081
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: prod
@@ -34,6 +34,8 @@ spec:
             secretKeyRef:
               name: db-secrets
               key: password
+        - name: SERVER_PORT
+          value: "8081"
         resources:
           limits:
             cpu: "500m"
@@ -44,12 +46,12 @@ spec:
         livenessProbe:
           httpGet:
             path: /actuator/health/liveness
-            port: 8080
+            port: 8081
           initialDelaySeconds: 60
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /actuator/health/readiness
-            port: 8080
+            port: 8081
           initialDelaySeconds: 30
           periodSeconds: 10
