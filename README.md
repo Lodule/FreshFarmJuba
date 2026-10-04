@@ -1,4 +1,4 @@
-# Fresh Farm Juba 🌾
+# Fresh Farm Juba 
 
 [![CI/CD](https://github.com/yourusername/FreshFarmJuba/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/yourusername/FreshFarmJuba/actions)
 [![Java Version](https://img.shields.io/badge/Java-21-orange.svg)](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html)
@@ -6,7 +6,7 @@
 
 A modern, scalable E-commerce platform for agricultural products in South Sudan. Built with Spring Boot, Thymeleaf, and PostgreSQL.
 
-## 🚀 Features
+## Features
 
 - **Customer App**: Browse products, manage wishlist, and secure checkout.
 - **Admin Dashboard**: Professional analytics, product management, and order tracking.
@@ -14,14 +14,14 @@ A modern, scalable E-commerce platform for agricultural products in South Sudan.
 - **Secure Authentication**: Spring Security with email verification.
 - **Responsive Design**: Fully optimized for mobile and desktop using Bootstrap 5.
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **Backend**: Java 21, Spring Boot 3.2.3, Spring Data JPA, Spring Security, Spring Mail
 - **Frontend**: Thymeleaf, Bootstrap 5.3, AOS (Animate on Scroll)
 - **Database**: PostgreSQL 15
 - **DevOps**: Docker, Docker Compose, Kubernetes, GitHub Actions
 
-## 📦 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -41,7 +41,7 @@ docker-compose up -d
 
 The application will be available at `http://localhost:8080`.
 
-## 🚢 Deployment
+## Deployment
 
 The project is ready for Kubernetes deployment. Manifests are located in the `/kubernetes` directory.
 
@@ -49,9 +49,9 @@ The project is ready for Kubernetes deployment. Manifests are located in the `/k
 ./scripts/deploy.sh
 ```
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-Built with ❤️ for Fresh Farm Juba.
+Built with love for Fresh Farm Juba.
